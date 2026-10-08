@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Genigma</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;800&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#eaf1f4;--panel:#fff;--ink:#17262f;--mute:#5d707c;--line:#c9d6dd;--stain:#5b3a9e;--ok:#17825f;--bad:#b83a14}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#101b22;--panel:#18272f;--ink:#e6eef2;--mute:#8fa4b0;--line:#2c4350;--stain:#b196f0;--ok:#4fd1a1;--bad:#ff8a5c}}
+:root[data-theme="dark"]{--bg:#101b22;--panel:#18272f;--ink:#e6eef2;--mute:#8fa4b0;--line:#2c4350;--stain:#b196f0;--ok:#4fd1a1;--bad:#ff8a5c}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Bricolage Grotesque",system-ui,sans-serif} main{max-width:580px;margin:0 auto;padding:18px 16px 40px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}.top h1{font-size:2rem;font-weight:800;margin:0;letter-spacing:-.02em}.help{width:38px;height:38px;border-radius:50%;font-weight:800;font-size:1.1rem}
+h2{font-size:1.05rem;margin:18px 0 6px}.sub{color:var(--mute);margin:2px 0 10px;font-size:.95rem}.box{background:var(--panel);border:1.5px solid var(--line);border-radius:12px;padding:10px 14px}.couples{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.couples .box{font-size:.85rem;padding:8px 10px}
+.dot{display:inline-block;width:.8em;height:.8em;border-radius:50%;vertical-align:-1px;margin-right:4px;border:1.5px solid var(--line)}.dot.d{background:#2b2320;border-color:#8fa4b0}.dot.m{background:#9a9a9a;border-color:#9a9a9a}.dot.r{background:#fff}ul{margin:0;padding-left:20px}li{margin:6px 0}
+.bar{display:flex;gap:8px;align-items:end;justify-content:space-between;margin:18px 0 8px}.bar h2{margin:0}.counts{display:flex;gap:10px;flex-wrap:wrap;font-size:.82rem;color:var(--mute)}.counts .over{color:var(--bad);font-weight:800}.pup{display:flex;align-items:center;gap:8px;padding:8px 12px;margin-bottom:8px}.pup .n{flex:1;font-size:.92rem}.pup button{width:48px;height:40px}
+button{font:inherit;cursor:pointer;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px}button:focus-visible{outline:3px solid var(--stain);outline-offset:2px}button:disabled{opacity:.55;cursor:default}.chip.s1{opacity:.45;text-decoration:line-through}.chip.s2{background:var(--ok);border-color:var(--ok);color:#fff;font-weight:800}.chip.s1::after{content:" ✕"}.chip.s2::after{content:" ✓"}
+:root[data-theme="dark"] .chip.s2,:root[data-theme="dark"] .go{color:#101b22}@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip.s2,:root:not([data-theme="light"]) .go{color:#101b22}}
+.hint{color:var(--mute);font-size:.85rem;margin:6px 0 0}.sec{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px}.go{background:var(--stain);color:#fff;border-color:var(--stain);font-weight:800;padding:10px 20px}.secondary{padding:10px 15px}.msg{font-weight:800;margin-top:10px;min-height:1.5em;color:var(--bad)}pre{white-space:pre-wrap;font:inherit;margin:6px 0}#end{display:none;margin-top:12px}
+dialog{width:min(520px,calc(100% - 28px));border:1.5px solid var(--line);border-radius:16px;padding:0;background:var(--panel);color:var(--ink);box-shadow:0 20px 60px #0005}dialog::backdrop{background:#101b2280}.modalHead{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1.5px solid var(--line)}.modalHead h2{margin:0}.close{width:36px;height:36px;font-size:1.2rem}.modalBody{padding:4px 16px 18px}.trait{margin-top:14px}.traitRow{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:5px}.traitRow span{border:1px solid var(--line);border-radius:9px;padding:7px;text-align:center;font-size:.82rem}.small{color:var(--mute);font-size:.88rem}
+.homeHero{text-align:center;padding:54px 9px 28px}.homeHero h1{font-size:3.25rem;margin:3px 0 6px;letter-spacing:-.055em}.homeHero p{max-width:425px;margin:0 auto;color:var(--mute);font-size:1.02rem}.dna{color:var(--stain);font-weight:800;letter-spacing:.18em;font-size:.75rem}.dailyCard{width:100%;text-align:left;padding:20px;border:2px solid var(--stain);border-radius:16px;background:var(--panel);display:flex;flex-direction:column;gap:4px;box-shadow:0 7px 0 color-mix(in srgb,var(--stain) 18%,transparent)}.dailyCard .eyebrow{font-size:.7rem;color:var(--stain);font-weight:800;letter-spacing:.13em}.dailyCard strong{font-size:1.45rem}.dailyCard span:not(.eyebrow){color:var(--mute)}.dailyCard b{margin-top:12px;color:var(--stain)}.practiceTitle{margin-top:30px}.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.mode{padding:15px 10px;text-align:left;min-height:105px}.mode strong,.mode span{display:block}.mode strong{font-size:1.05rem;margin-bottom:5px}.mode span{color:var(--mute);font-size:.8rem}.homeFoot{text-align:center;color:var(--mute);font-size:.78rem;margin-top:34px}.back{width:38px;height:38px;font-size:1.15rem}.top h1{flex:1;text-align:center}.top .help{flex:0 0 auto}.top .back{flex:0 0 auto}
+.dailyMeta{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:9px;color:var(--mute);font-size:.8rem}.difficulty{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:999px;background:#f2e6d4;color:#8a551c;font-size:.7rem;font-weight:800;letter-spacing:.06em}.difficulty::before{content:"◆"}.helpPage[hidden]{display:none}.helpNav{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:18px}.helpDots{display:flex;gap:6px}.helpDots i{display:block;width:7px;height:7px;border-radius:50%;background:var(--line)}.helpDots i.active{background:var(--stain)}
+@media(max-width:480px){.couples{grid-template-columns:1fr}.pup{align-items:flex-start;flex-wrap:wrap}.pup .n{flex-basis:100%}.pup button{flex:1}.bar{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<main>
+  <section id="home">
+    <div class="homeHero"><div class="dna">A · T · G · C</div><h1>Genigma</h1><p>Use genetics. Follow the clues. Reunite every child with the right parents.</p></div>
+    <button class="dailyCard" id="playDaily"><span class="eyebrow">DAILY CASE</span><strong id="dailyTitle">Today's Genigma</strong><span>One new inheritance puzzle each day.</span><b>Play daily →</b></button>
+    <div class="dailyMeta"><span id="nextDaily">Next daily in --:--:--</span><span id="homeDifficulty"></span></div>
+    <h2 class="practiceTitle">Practice</h2><p class="sub">More puzzles, at your own pace.</p>
+    <div class="modes">
+      <button class="mode" data-mode="Easy"><strong>Easy</strong><span>Start with simpler deductions.</span></button>
+      <button class="mode" data-mode="Normal"><strong>Normal</strong><span>The classic Genigma challenge.</span></button>
+      <button class="mode" data-mode="Hard"><strong>Hard</strong><span>For confident genetic detectives.</span></button>
+    </div>
+    <p class="homeFoot">A daily genetics logic puzzle.</p>
+  </section>
+  <section id="game" hidden>
+  <div class="top"><button class="back" id="backHome" aria-label="Back to home">←</button><h1>Genigma</h1><button class="help" id="help" aria-label="How to play and genetics guide">?</button></div>
+  <p class="sub" id="sub"></p><div id="gameDifficulty"></div>
+  <h2>The couples</h2><div class="couples" id="couples"></div>
+  <h2>The clues</h2><div class="box"><ul id="clues"></ul></div>
+  <div class="bar"><h2>The lost children</h2><div class="counts" id="counts"></div></div>
+  <div id="rows"></div>
+  <p class="hint">Tap once to rule out a couple ✕, twice to choose it ✓, and again to clear. Each child can have only one ✓.</p>
+  <div class="sec"><button class="go" id="check">Check answer</button><button class="secondary" id="restart">Reset</button></div>
+  <div class="msg" id="msg" aria-live="polite"></div>
+  <div class="box" id="end"><b id="endT"></b><pre id="share"></pre><button class="secondary" id="copy">Copy result</button></div>
+  </section>
+</main>
+<dialog id="maintenanceDialog"><div class="modalHead"><h2 id="maintenanceTitle">Practice</h2><button class="close" id="closeMaintenance" aria-label="Close">×</button></div><div class="modalBody"><p><b>This mode is under construction.</b></p><p class="small">For now, the Daily Case is ready to play. Easy, Normal and Hard practice modes are coming later.</p><button class="go" id="maintenanceDaily">Play the Daily Case</button></div></dialog>
+<dialog id="helpDialog">
+  <div class="modalHead"><h2 id="helpTitle">How to play</h2><button class="close" id="closeHelp" aria-label="Close">×</button></div>
+  <div class="modalBody">
+    <div class="helpPage" id="helpPage1">
+      <p>Three litters got mixed up. Use the children's traits and the clues to work out which two children belong to each couple.</p>
+      <p><b>Tap once</b> to rule out a couple ✕, <b>twice</b> to choose it ✓, and <b>again</b> to clear the mark.</p>
+      <p class="small">Every couple has exactly two children. Use exclusions as working notes, then confirm one couple ✓ for every child before checking your answer.</p>
+    </div>
+    <div class="helpPage" id="helpPage2" hidden>
+      <p class="small">The three traits are independent and show <b>incomplete dominance</b>, so heterozygotes have an intermediate phenotype. Each parent passes one of its two alleles to each child. A <b>?</b> means that parent's phenotype is hidden; the clues give facts about them.</p>
+      <div class="trait"><b>Coat</b><div class="traitRow"><span>BB<br>Black</span><span>BW<br>Gray</span><span>WW<br>White</span></div></div>
+      <div class="trait"><b>Ears</b><div class="traitRow"><span>PP<br>Pointed</span><span>PR<br>Folded</span><span>RR<br>Round</span></div></div>
+      <div class="trait"><b>Pattern</b><div class="traitRow"><span>SS<br>Smooth</span><span>SD<br>Dappled</span><span>DD<br>Spotted</span></div></div>
+    </div>
+    <div class="helpNav"><button class="secondary" id="helpBack" style="visibility:hidden">← Back</button><div class="helpDots"><i class="active"></i><i></i></div><button class="go" id="helpNext">Next →</button></div>
+  </div>
+</dialog>
+<script src="puzzles.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+if(typeof PUZZLES==="undefined"){document.querySelector("main").innerHTML="<h1>Genigma</h1><p>Could not find puzzles.js. Run <code>python generate_puzzles.py</code> and put the file in the same folder as this one.</p>"}
+else{
+const d=new Date(),dayNum=Math.floor(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5);
+const idx=dayNum%PUZZLES.length,Z=PUZZLES[idx],sol=Z.s,TRIES=3;
+const isHardDaily=Array.isArray(Z.p)&&Z.p.length===6&&Z.p.every(parent=>parent===null);
+function difficultyBadge(){return isHardDaily?'<span class="difficulty">DIFFICULT CASE</span>':''}
+$("homeDifficulty").innerHTML=difficultyBadge();$("gameDifficulty").innerHTML=difficultyBadge();
+function updateCountdown(){const now=new Date(),next=new Date(now);next.setHours(24,0,0,0);let sec=Math.max(0,Math.floor((next-now)/1000));const h=String(Math.floor(sec/3600)).padStart(2,"0");sec%=3600;const m=String(Math.floor(sec/60)).padStart(2,"0"),ss=String(sec%60).padStart(2,"0");$("nextDaily").textContent=`Next daily in ${h}:${m}:${ss}`}
+updateCountdown();setInterval(updateCountdown,1000);
+$("dailyTitle").textContent=`Genigma #${idx+1}`;
+function openDaily(){ $("home").hidden=true; $("game").hidden=false; window.scrollTo(0,0); }
+function openHome(){ $("game").hidden=true; $("home").hidden=false; window.scrollTo(0,0); }
+$("playDaily").onclick=openDaily; $("backHome").onclick=openHome;
+document.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{$("maintenanceTitle").textContent=b.dataset.mode+" practice";$("maintenanceDialog").showModal()});
+$("closeMaintenance").onclick=()=>$("maintenanceDialog").close();
+$("maintenanceDaily").onclick=()=>{$("maintenanceDialog").close();openDaily()};
+$("maintenanceDialog").onclick=e=>{if(e.target===$("maintenanceDialog"))$("maintenanceDialog").close()};
+$("sub").textContent=`Case #${idx+1}. Three litters got mixed up at the nursery. Work out which children belong to which couple. Each couple has exactly 2 children.`;
+const PH=[["black coat","gray coat","white coat"],["pointed ears","folded ears","round ears"],["smooth pattern","dappled pattern","spotted pattern"]];
+const ph=f=>`<span class="dot ${["d","m","r"][f[0]]}"></span>${PH[0][f[0]]}, ${PH[1][f[1]]}, ${PH[2][f[2]]}`;
+const pp=f=>f===null?"<b>?</b> (hidden)":ph(f);
+let tries=+store.get("gn-t-"+dayNum)||0,done=store.get("gn-d-"+dayNum)||"";
+let grid;try{grid=JSON.parse(store.get("gn-g-"+dayNum))}catch(e){}
+if(!Array.isArray(grid)||grid.length!==6)grid=Array.from({length:6},()=>[0,0,0]);
+const STATE=["undecided","ruled out","confirmed"];
+function renderInfo(){
+  $("couples").innerHTML=[0,1,2].map(c=>`<div class="box"><b>Couple ${"ABC"[c]}</b><br>Mother: ${pp(Z.p[2*c])}<br>Father: ${pp(Z.p[2*c+1])}</div>`).join("");
+  $("clues").innerHTML=Z.c.map(t=>`<li>${t}</li>`).join("");
+}
+function setMark(i,c){
+  const next=(grid[i][c]+1)%3;
+  if(next===2){for(let j=0;j<3;j++)if(j!==c&&grid[i][j]===2)grid[i][j]=0}
+  grid[i][c]=next;store.set("gn-g-"+dayNum,JSON.stringify(grid));msg("");renderGame();
+}
+function renderGame(){
+  const cnt=[0,1,2].map(c=>grid.filter(r=>r[c]===2).length);
+  $("counts").innerHTML=[0,1,2].map(c=>`<span class="${cnt[c]>2?"over":""}">Couple ${"ABC"[c]}: ${cnt[c]}/2</span>`).join("");
+  $("rows").innerHTML=grid.map((row,i)=>`<div class="box pup"><span class="n"><b>Child #${i+1}</b><br>${ph(Z.u[i])}</span>`+row.map((v,c)=>`<button class="chip s${v}" data-i="${i}" data-c="${c}" ${done?"disabled":""} aria-label="Child ${i+1}, Couple ${"ABC"[c]}: ${STATE[v]}">${"ABC"[c]}</button>`).join("")+`</div>`).join("");
+  document.querySelectorAll(".chip").forEach(b=>b.onclick=()=>setMark(+b.dataset.i,+b.dataset.c));
+  $("check").disabled=!!done;
+}
+function renderEnd(){
+  $("end").style.display=done?"block":"none";
+  if(done){
+    if(done==="lose") grid=sol.map(c=>[0,1,2].map(x=>x===c?2:0));
+    $("endT").textContent=done==="win"?"Case solved!":"Case closed. The solution is shown above.";
+    $("share").textContent=`Genigma #${idx+1}\n⚖️ ${done==="win"?"Solved in "+tries+"/"+TRIES:"Not solved ("+TRIES+"/"+TRIES+")"}`;
+  }
+}
+function render(){renderInfo();renderEnd();renderGame()}
+const msg=t=>$("msg").textContent=t;
+$("check").onclick=()=>{
+  const guess=grid.map(r=>r.indexOf(2));
+  if(guess.includes(-1))return msg("Choose one couple ✓ for every child.");
+  if([0,1,2].some(c=>guess.filter(x=>x===c).length!==2))return msg("Each couple must have exactly 2 children.");
+  tries++;store.set("gn-t-"+dayNum,tries);
+  if(guess.every((c,i)=>c===sol[i]))done="win";else if(tries>=TRIES)done="lose";
+  if(done)store.set("gn-d-"+dayNum,done);
+  msg(done?"":`Not quite. Attempt ${tries}/${TRIES}.`);render();
+};
+$("restart").onclick=()=>{
+  if(!confirm(done?"Restart this case from scratch, including your attempts?":"Clear all your marks?"))return;
+  grid=Array.from({length:6},()=>[0,0,0]);store.set("gn-g-"+dayNum,JSON.stringify(grid));
+  if(done){tries=0;done="";store.set("gn-t-"+dayNum,"0");store.set("gn-d-"+dayNum,"")}
+  msg("");render();
+};
+$("copy").onclick=()=>{const t=$("share").textContent;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>$("copy").textContent="Copied!").catch(()=>{$("copy").textContent="Select and copy"})};
+let helpStep=1;function showHelpStep(n){helpStep=n;$("helpPage1").hidden=n!==1;$("helpPage2").hidden=n!==2;$("helpTitle").textContent=n===1?"How to play":"Genetics guide";$("helpBack").style.visibility=n===1?"hidden":"visible";$("helpNext").textContent=n===1?"Next →":"Got it";document.querySelectorAll(".helpDots i").forEach((d,i)=>d.classList.toggle("active",i===n-1))}
+$("help").onclick=()=>{showHelpStep(1);$("helpDialog").showModal()};$("helpNext").onclick=()=>{if(helpStep===1)showHelpStep(2);else $("helpDialog").close()};$("helpBack").onclick=()=>showHelpStep(1);$("closeHelp").onclick=()=>$("helpDialog").close();$("helpDialog").onclick=e=>{if(e.target===$("helpDialog"))$("helpDialog").close()};
+render();
+}
+</script>
+</body>
+</html>
