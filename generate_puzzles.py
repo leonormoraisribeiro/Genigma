@@ -1,23 +1,21 @@
-"""Gerador de puzzles do Paternity Court (versão: dominância incompleta, 3 traços).
+"""Paternity Court puzzle generator (version: incomplete dominance, 3 traits).
+Model: 3 pairs (A, B, C), 6 offspring (2 per pair), 3 independent traits with INCOMPLETE
+DOMINANCE: the heterozygote has its own phenotype, meaning the phenotype reveals the genotype.
+Genotype of a trait = number of "2" alleles (0 = homozygous 1, 1 = heterozygous, 2 = homozygous 2).
+Parents 0..5 (mother A, father A, mother B, father B, mother C, father C). Each parent passes one of their
+two alleles; the offspring inherits one from each parent.
+Visible: genotypes of offspring and of NON-hidden parents (hidden ones appear as "?").
+To deduce: which offspring belong to which pair. Clues are facts about the hidden parents.
 
-Modelo: 3 casais (A, B, C), 6 crias (2 por casal), 3 traços independentes com DOMINÂNCIA
-INCOMPLETA: o heterozigótico tem um fenótipo próprio, por isso o fenótipo revela o genótipo.
-Genótipo de um traço = nº de alelos "2" (0 = homozigótico 1, 1 = heterozigótico, 2 = homozigótico 2).
-Progenitores 0..5 (mãe A, pai A, mãe B, pai B, mãe C, pai C). Cada progenitor passa um dos seus
-dois alelos; a cria recebe um de cada progenitor.
+A puzzle is only accepted if:
+1. the clues + visible information yield exactly ONE valid assignment;
+2. all 6 offspring have unique profiles;
+3. there are 4 to 6 hidden parents, and using only visible information leaves 30+ possible assignments;
+4. no clue is redundant;
+5. clues are genetic facts; at most MAX_LOGIC logical clues (same pair / different pairs).
 
-Visível: genótipos das crias e dos progenitores NÃO escondidos (aparecem como "?" os escondidos).
-A deduzir: que crias são de que casal. As pistas são factos sobre os progenitores escondidos.
-
-Um puzzle só é aceite se:
-  1. as pistas + o que é visível dão exatamente UMA atribuição possível;
-  2. as 6 crias têm perfis todos diferentes;
-  3. há 4 a 6 progenitores escondidos e, só com o que é visível, sobram 30+ atribuições possíveis;
-  4. nenhuma pista é redundante;
-  5. as pistas são factos de genética; no máximo MAX_LOGIC pistas lógicas (mesmo casal / diferentes).
-
-Os traços são independentes, por isso a genética de cada um é calculada à parte e só se
-combina no fim ao nível das atribuições (90 possíveis).
+The traits are independent, so the genetics for each trait are calculated separately and only
+combined at the end at the assignment level (90 possibilities).
 """
 import itertools, json, random, sys
 
@@ -32,7 +30,7 @@ ASGS = sorted(set(itertools.permutations([0, 0, 1, 1, 2, 2])))   # 90 atribuiç�
 FULL = (1 << len(ASGS)) - 1
 COUPLE = "ABC"
 ones = lambda m: bin(m).count("1")
-TRANS = {0: (0,), 1: (0, 1), 2: (1,)}            # valores que um progenitor pode transmitir
+TRANS = {0: (0,), 1: (0, 1), 2: (1,)}            # values that a parent can transmit
 poss = lambda m, f: {a + b for a in TRANS[m] for b in TRANS[f]}
 
 
@@ -40,14 +38,13 @@ def sample_world(rng):
     g = [[rng.choice([0, 1, 2]) for _ in range(NT)] for _ in range(6)]
     asg = tuple(rng.choice(ASGS))
     pup = [[int(rng.random() < g[2*c][t] / 2) + int(rng.random() < g[2*c+1][t] / 2) for t in range(NT)] for c in asg]
-    if len({tuple(p) for p in pup}) < 6:          # as 6 crias têm de ser todas diferentes
+    if len({tuple(p) for p in pup}) < 6:          # the six children have to be different
         return None
     return g, asg, pup
 
 
 def trait_model(hidden, g_t, pup_t):
-    """Vetores de genótipos possíveis dos 6 progenitores (num traço) e, para cada um,
-    a máscara das atribuições compatíveis com as crias."""
+    """Genome vector for all 6 parents"""
     vecs = list(itertools.product(*[[0, 1, 2] if p in hidden else [g_t[p]] for p in range(6)]))
     def comp(v, a):
         return all(pup_t[i] in poss(v[2*a[i]], v[2*a[i]+1]) for i in range(6))
@@ -80,9 +77,9 @@ def make_puzzle(rng):
         return av, logic
     couples_of = lambda m, i: {ASGS[k][i] for k in range(len(ASGS)) if m >> k & 1}
     base = alive(start)
-    if ones(base) < 30: return None              # sem pistas já estaria quase resolvido
+    if ones(base) < 30: return None              
     already = {i for i in range(6) if len(couples_of(base, i)) < 2}
-    pinned = lambda m: False   # com dominância incompleta quase toda a pista fixa alguma cria; não se exige
+    pinned = lambda m: False   
 
     pool = []
     def add(t, test, text):
@@ -125,7 +122,7 @@ def make_puzzle(rng):
         return out
     while ones(alive(state)) > 1 and len(chosen) < MAX_CLUES:
         cands = useful(gen_pool, state)
-        if cands:                                # descida gradual até 1 solução
+        if cands:                                # gradual decline until solution
             na = ones(alive(state)); left = max(1, steps - len(chosen))
             target = max(1, round(na ** ((left - 1) / left)))
             best = min(abs(k - target) for k, _ in cands)
@@ -137,7 +134,7 @@ def make_puzzle(rng):
             k, c = min(cands, key=lambda x: x[0]); n_log += 1
         chosen.append(c); state = apply(state, c)
     if ones(alive(state)) != 1: return None
-    for c in list(chosen):                       # poda de pistas redundantes
+    for c in list(chosen):                       # redudant clues
         rest = [x for x in chosen if x is not c]; st = start
         for x in rest: st = apply(st, x)
         if ones(alive(st)) == 1: chosen = rest
