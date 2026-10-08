@@ -95,6 +95,8 @@ dialog{width:min(520px,calc(100% - 28px));border:1.5px solid var(--line);border-
   button{min-height:44px}
 }
 
+.winHero{text-align:center;padding:8px 0 4px}.winIcon{width:68px;height:68px;margin:0 auto 12px;border-radius:50%;display:grid;place-items:center;background:var(--ok);color:#fff;font-size:2rem;font-weight:800}.winHero h2{font-size:1.55rem;margin:0 0 4px}.winTime{font-size:2rem;font-weight:800;color:var(--stain);margin:10px 0 2px}.winStats{display:flex;justify-content:center;gap:8px;color:var(--mute);font-size:.82rem}.winActions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:18px}.winActions button{min-height:46px}
+.winHero{text-align:center;padding:0}.winIcon{width:44px;height:44px;margin:2px auto 8px;border-radius:50%;display:grid;place-items:center;background:var(--ok);color:#fff;font-size:1.25rem;font-weight:800}.winHero h2{font-size:1.2rem;margin:0 0 2px}.winHero .small{margin:0 auto 8px;max-width:300px}.winTime{font-size:1.55rem;font-weight:800;color:var(--stain);margin:6px 0 0;line-height:1.15}.winStats{display:flex;justify-content:center;gap:6px;color:var(--mute);font-size:.76rem;margin-top:3px}.winActions{display:flex;gap:7px;margin-top:13px}.winActions button{min-height:40px;padding:8px 12px;flex:1}#winDialog{width:min(345px,calc(100% - 32px));border-radius:14px}#winDialog .modalBody{padding:16px}
 </style>
 </head>
 <body>
@@ -142,6 +144,7 @@ dialog{width:min(520px,calc(100% - 28px));border:1.5px solid var(--line);border-
     <div class="helpNav"><button class="secondary" id="helpBack" style="visibility:hidden">← Back</button><div class="helpDots"><i class="active"></i><i></i></div><button class="go" id="helpNext">Next →</button></div>
   </div>
 </dialog>
+<dialog id="winDialog"><div class="modalBody"><div class="winHero"><div class="winIcon">✓</div><h2>Case solved!</h2><p class="small">All matches are correct.</p><div class="winTime" id="winTime">00:00</div><div class="winStats"><span id="winAttempts"></span><span>·</span><span id="winDifficulty"></span></div></div><div class="winActions"><button class="secondary" id="winClose">Done</button><button class="go" id="winCopy">Copy result</button></div></div></dialog>
 <script src="puzzles.js"></script>
 <script>
 const $=id=>document.getElementById(id);
@@ -156,7 +159,7 @@ $("homeDifficulty").innerHTML=difficultyBadge();$("gameDifficulty").innerHTML=di
 function updateCountdown(){const now=new Date(),next=new Date(now);next.setHours(24,0,0,0);let sec=Math.max(0,Math.floor((next-now)/1000));const h=String(Math.floor(sec/3600)).padStart(2,"0");sec%=3600;const m=String(Math.floor(sec/60)).padStart(2,"0"),ss=String(sec%60).padStart(2,"0");$("nextDaily").textContent=`Next daily in ${h}:${m}:${ss}`}
 updateCountdown();setInterval(updateCountdown,1000);
 $("dailyTitle").textContent=`Genigma #${idx+1}`;
-function openDaily(){ $("home").hidden=true; $("game").hidden=false; window.scrollTo(0,0); }
+function openDaily(){ $("home").hidden=true; $("game").hidden=false; window.scrollTo(0,0); startTimer(); }
 function openHome(){ $("game").hidden=true; $("home").hidden=false; window.scrollTo(0,0); }
 $("playDaily").onclick=openDaily; $("backHome").onclick=openHome;
 document.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{$("maintenanceTitle").textContent=b.dataset.mode+" practice";$("maintenanceDialog").showModal()});
@@ -168,6 +171,9 @@ const PH=[["black coat","gray coat","white coat"],["pointed ears","folded ears",
 const ph=f=>`<span class="dot ${["d","m","r"][f[0]]}"></span>${PH[0][f[0]]}, ${PH[1][f[1]]}, ${PH[2][f[2]]}`;
 const pp=f=>f===null?"<b>?</b> (hidden)":ph(f);
 let tries=+store.get("gn-t-"+dayNum)||0,done=store.get("gn-d-"+dayNum)||"";
+let startedAt=+store.get("gn-start-"+dayNum)||0,solveSeconds=+store.get("gn-time-"+dayNum)||0;
+function startTimer(){if(!startedAt&&!done){startedAt=Date.now();store.set("gn-start-"+dayNum,startedAt)}}
+function formatTime(total){total=Math.max(0,Math.floor(total));const h=Math.floor(total/3600),m=Math.floor(total%3600/60),sec=total%60;return h?`${h}:${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`:`${String(m).padStart(2,"0")}:${String(sec).padStart(2,"0")}`}
 let grid;try{grid=JSON.parse(store.get("gn-g-"+dayNum))}catch(e){}
 if(!Array.isArray(grid)||grid.length!==6)grid=Array.from({length:6},()=>[0,0,0]);
 const STATE=["undecided","ruled out","confirmed"];
@@ -192,7 +198,7 @@ function renderEnd(){
   if(done){
     if(done==="lose") grid=sol.map(c=>[0,1,2].map(x=>x===c?2:0));
     $("endT").textContent=done==="win"?"Case solved!":"Case closed. The solution is shown above.";
-    $("share").textContent=`Genigma #${idx+1}\n⚖️ ${done==="win"?"Solved in "+tries+"/"+TRIES:"Not solved ("+TRIES+"/"+TRIES+")"}`;
+    $("share").textContent=`Genigma #${idx+1}\n⚖️ ${done==="win"?"Solved in "+tries+"/"+TRIES+" · ⏱ "+formatTime(solveSeconds):"Not solved ("+TRIES+"/"+TRIES+")"}`;
   }
 }
 function render(){renderInfo();renderEnd();renderGame()}
@@ -202,15 +208,16 @@ $("check").onclick=()=>{
   if(guess.includes(-1))return msg("Choose one couple ✓ for every child.");
   if([0,1,2].some(c=>guess.filter(x=>x===c).length!==2))return msg("Each couple must have exactly 2 children.");
   tries++;store.set("gn-t-"+dayNum,tries);
-  if(guess.every((c,i)=>c===sol[i]))done="win";else if(tries>=TRIES)done="lose";
+  if(guess.every((c,i)=>c===sol[i])){done="win";solveSeconds=startedAt?Math.floor((Date.now()-startedAt)/1000):0;store.set("gn-time-"+dayNum,solveSeconds)}else if(tries>=TRIES)done="lose";
   if(done)store.set("gn-d-"+dayNum,done);
-  msg(done?"":`Not quite. Attempt ${tries}/${TRIES}.`);render();
+  msg(done?"":`Not quite. Attempt ${tries}/${TRIES}.`);render();if(done==="win"){$("winTime").textContent=formatTime(solveSeconds);$("winAttempts").textContent=`${tries} ${tries===1?"attempt":"attempts"}`;$("winDifficulty").textContent=isHardDaily?"Difficult case":"Daily case";$("winDialog").showModal()}
 };
 $("restart").onclick=()=>{
   if(!confirm(done?"Restart this case from scratch, including your attempts?":"Clear all your marks?"))return;
   grid=Array.from({length:6},()=>[0,0,0]);store.set("gn-g-"+dayNum,JSON.stringify(grid));
-  if(done){tries=0;done="";store.set("gn-t-"+dayNum,"0");store.set("gn-d-"+dayNum,"")}
-  msg("");render();
+  if(done){tries=0;done="";startedAt=Date.now();solveSeconds=0;store.set("gn-t-"+dayNum,"0");store.set("gn-d-"+dayNum,"");store.set("gn-start-"+dayNum,startedAt);store.set("gn-time-"+dayNum,"0")}
+  msg("");$("winClose").onclick=()=>$("winDialog").close();$("winCopy").onclick=()=>{const t=$("share").textContent;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>$("winCopy").textContent="Copied!").catch(()=>$("winCopy").textContent="Copy result")};
+render();
 };
 $("copy").onclick=()=>{const t=$("share").textContent;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>$("copy").textContent="Copied!").catch(()=>{$("copy").textContent="Select and copy"})};
 let helpStep=1;function showHelpStep(n){helpStep=n;$("helpPage1").hidden=n!==1;$("helpPage2").hidden=n!==2;$("helpTitle").textContent=n===1?"How to play":"Genetics guide";$("helpBack").style.visibility=n===1?"hidden":"visible";$("helpNext").textContent=n===1?"Next →":"Got it";document.querySelectorAll(".helpDots i").forEach((d,i)=>d.classList.toggle("active",i===n-1))}
