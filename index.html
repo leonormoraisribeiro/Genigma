@@ -21,6 +21,80 @@ dialog{width:min(520px,calc(100% - 28px));border:1.5px solid var(--line);border-
 .homeHero{text-align:center;padding:54px 9px 28px}.homeHero h1{font-size:3.25rem;margin:3px 0 6px;letter-spacing:-.055em}.homeHero p{max-width:425px;margin:0 auto;color:var(--mute);font-size:1.02rem}.dna{color:var(--stain);font-weight:800;letter-spacing:.18em;font-size:.75rem}.dailyCard{width:100%;text-align:left;padding:20px;border:2px solid var(--stain);border-radius:16px;background:var(--panel);display:flex;flex-direction:column;gap:4px;box-shadow:0 7px 0 color-mix(in srgb,var(--stain) 18%,transparent)}.dailyCard .eyebrow{font-size:.7rem;color:var(--stain);font-weight:800;letter-spacing:.13em}.dailyCard strong{font-size:1.45rem}.dailyCard span:not(.eyebrow){color:var(--mute)}.dailyCard b{margin-top:12px;color:var(--stain)}.practiceTitle{margin-top:30px}.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.mode{padding:15px 10px;text-align:left;min-height:105px}.mode strong,.mode span{display:block}.mode strong{font-size:1.05rem;margin-bottom:5px}.mode span{color:var(--mute);font-size:.8rem}.homeFoot{text-align:center;color:var(--mute);font-size:.78rem;margin-top:34px}.back{width:38px;height:38px;font-size:1.15rem}.top h1{flex:1;text-align:center}.top .help{flex:0 0 auto}.top .back{flex:0 0 auto}
 .dailyMeta{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:9px;color:var(--mute);font-size:.8rem}.difficulty{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:999px;background:#f2e6d4;color:#8a551c;font-size:.7rem;font-weight:800;letter-spacing:.06em}.difficulty::before{content:"◆"}.helpPage[hidden]{display:none}.helpNav{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-top:18px}.helpDots{display:flex;gap:6px}.helpDots i{display:block;width:7px;height:7px;border-radius:50%;background:var(--line)}.helpDots i.active{background:var(--stain)}
 @media(max-width:480px){.couples{grid-template-columns:1fr}.pup{align-items:flex-start;flex-wrap:wrap}.pup .n{flex-basis:100%}.pup button{flex:1}.bar{align-items:flex-start;flex-direction:column}}
+
+/* Mobile layout: optimized for narrow touch screens */
+@media (max-width:600px){
+  html{font-size:16px}
+  body{min-width:0;overflow-x:hidden}
+  main{width:100%;max-width:none;padding:12px 12px calc(32px + env(safe-area-inset-bottom,0px))}
+
+  .homeHero{padding:34px 10px 22px}
+  .homeHero h1{font-size:2.75rem;line-height:1;letter-spacing:-.055em}
+  .homeHero p{font-size:.95rem;line-height:1.45;max-width:330px}
+  .dailyCard{padding:18px;border-radius:15px;box-shadow:0 5px 0 color-mix(in srgb,var(--stain) 18%,transparent)}
+  .dailyCard strong{font-size:1.3rem}
+  .dailyMeta{align-items:flex-start;flex-direction:column;gap:6px;margin:10px 2px 0}
+  .modes{grid-template-columns:1fr;gap:9px}
+  .mode{min-height:0;padding:14px 15px}
+  .practiceTitle{margin-top:26px}
+
+  .top{position:sticky;top:0;z-index:20;margin:0 -12px 10px;padding:8px 12px;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .top h1{font-size:1.45rem}
+  .back,.help{width:44px;height:44px;min-width:44px}
+  #game>.sub{font-size:.87rem;line-height:1.4;margin:8px 2px 6px}
+  #gameDifficulty{margin:0 2px 2px}
+
+  h2{font-size:1rem;margin-top:20px}
+  .couples{grid-template-columns:1fr;gap:7px}
+  .couples .box{font-size:.82rem;padding:10px 12px}
+  .box{border-radius:11px}
+  #clues{font-size:.9rem;padding-left:18px}
+  #clues li{margin:7px 0}
+
+  .bar{margin:22px 0 8px;gap:7px}
+  .counts{width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:6px;font-size:.72rem}
+  .counts span{text-align:center;background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 3px}
+
+  .pup{display:grid;grid-template-columns:1fr;gap:9px;padding:11px 12px;margin-bottom:9px}
+  .pup .n{font-size:.88rem;line-height:1.45;min-width:0}
+  .pup .n b{font-size:.95rem}
+  .pup button{width:auto;height:46px;min-width:0}
+  .pup button:nth-of-type(1){grid-column:1}
+  .pup{grid-template-columns:repeat(3,1fr)}
+  .pup .n{grid-column:1/-1}
+  .chip{font-size:.92rem;font-weight:800}
+  .hint{font-size:.78rem;line-height:1.4;padding:0 2px}
+
+  .sec{display:grid;grid-template-columns:2fr 1fr;gap:8px;position:sticky;bottom:0;z-index:15;margin:16px -12px -1px;padding:10px 12px calc(10px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg) 75%,color-mix(in srgb,var(--bg) 0%,transparent));}
+  .sec button{min-height:48px;width:100%}
+  .msg{font-size:.85rem;margin:9px 2px 0}
+  #end{margin-bottom:10px}
+
+  dialog{width:calc(100% - 20px);max-width:none;max-height:90dvh;border-radius:16px}
+  .modalHead{padding:12px 14px;position:sticky;top:0;background:var(--panel);z-index:2}
+  .modalHead h2{margin:0;font-size:1.05rem}
+  .close{width:44px;height:44px}
+  .modalBody{padding:3px 14px 16px;font-size:.92rem}
+  .trait{margin-top:12px}
+  .traitRow{gap:5px}
+  .traitRow span{padding:7px 4px;font-size:.75rem}
+  .small{font-size:.82rem;line-height:1.45}
+  .helpNav{position:sticky;bottom:-16px;background:var(--panel);padding:11px 0 2px;margin-top:14px}
+  .helpNav button{min-height:44px}
+}
+@media (max-width:360px){
+  main{padding-left:9px;padding-right:9px}
+  .top{margin-left:-9px;margin-right:-9px;padding-left:9px;padding-right:9px}
+  .pup{padding:10px 9px;gap:6px}
+  .chip{font-size:.85rem}
+  .counts{font-size:.66rem}
+  .traitRow span{font-size:.7rem}
+  .sec{margin-left:-9px;margin-right:-9px;padding-left:9px;padding-right:9px}
+}
+@media (pointer:coarse){
+  button{min-height:44px}
+}
+
 </style>
 </head>
 <body>
@@ -42,7 +116,7 @@ dialog{width:min(520px,calc(100% - 28px));border:1.5px solid var(--line);border-
   <p class="sub" id="sub"></p><div id="gameDifficulty"></div>
   <h2>The couples</h2><div class="couples" id="couples"></div>
   <h2>The clues</h2><div class="box"><ul id="clues"></ul></div>
-  <div class="bar"><h2>The Offspring</h2><div class="counts" id="counts"></div></div>
+  <div class="bar"><h2>The lost children</h2><div class="counts" id="counts"></div></div>
   <div id="rows"></div>
   <p class="hint">Tap once to rule out a couple ✕, twice to choose it ✓, and again to clear. Each child can have only one ✓.</p>
   <div class="sec"><button class="go" id="check">Check answer</button><button class="secondary" id="restart">Reset</button></div>
@@ -60,24 +134,12 @@ dialog{width:min(520px,calc(100% - 28px));border:1.5px solid var(--line);border-
       <p class="small">Every couple has exactly two children. Use exclusions as working notes, then confirm one couple ✓ for every child before checking your answer.</p>
     </div>
     <div class="helpPage" id="helpPage2" hidden>
-      <p><b>Genes & alleles</b></p>
-      <p class="small">Each trait in Genigma is controlled by a gene. For each trait, an individual has <b>two alleles</b>: one inherited from the mother and one from the father.</p>
-      <p><b>Genotype vs phenotype</b></p>
-      <p class="small"><b>Genotype</b> is the pair of alleles an individual has, such as <b>BB</b>, <b>BW</b> or <b>WW</b>. <b>Phenotype</b> is the visible trait produced by that genotype, such as black, gray or white coat.</p>
-      <div class="trait"><b>Homozygous</b><div class="traitRow"><span>BB<br><small>same alleles</small></span><span>WW<br><small>same alleles</small></span><span><b>Homo</b><br><small>= same</small></span></div></div>
-      <div class="trait"><b>Heterozygous</b><div class="traitRow"><span>BW<br><small>different alleles</small></span><span>PR<br><small>different alleles</small></span><span><b>Hetero</b><br><small>= different</small></span></div></div>
-    </div>
-    <div class="helpPage" id="helpPage3" hidden>
-      <p><b>How inheritance works</b></p>
-      <p class="small">Each parent passes <b>one of their two alleles</b> to each child. So if one parent is <b>BW</b> and the other is <b>WW</b>, their children can be <b>BW</b> or <b>WW</b>, but not <b>BB</b>. Use impossible combinations to rule couples out.</p>
-      <p><b>Incomplete dominance</b></p>
-      <p class="small">In Genigma, heterozygous genotypes have their own intermediate phenotype. This means all three genotypes can look different.</p>
+      <p class="small">The three traits are independent and show <b>incomplete dominance</b>, so heterozygotes have an intermediate phenotype. Each parent passes one of its two alleles to each child. A <b>?</b> means that parent's phenotype is hidden; the clues give facts about them.</p>
       <div class="trait"><b>Coat</b><div class="traitRow"><span>BB<br>Black</span><span>BW<br>Gray</span><span>WW<br>White</span></div></div>
       <div class="trait"><b>Ears</b><div class="traitRow"><span>PP<br>Pointed</span><span>PR<br>Folded</span><span>RR<br>Round</span></div></div>
       <div class="trait"><b>Pattern</b><div class="traitRow"><span>SS<br>Smooth</span><span>SD<br>Dappled</span><span>DD<br>Spotted</span></div></div>
-      <p class="small"><b>?</b> means a parent's phenotype is hidden. The clues give you information to infer what that parent could be.</p>
     </div>
-    <div class="helpNav"><button class="secondary" id="helpBack" style="visibility:hidden">← Back</button><div class="helpDots"><i class="active"></i><i></i><i></i></div><button class="go" id="helpNext">Next →</button></div>
+    <div class="helpNav"><button class="secondary" id="helpBack" style="visibility:hidden">← Back</button><div class="helpDots"><i class="active"></i><i></i></div><button class="go" id="helpNext">Next →</button></div>
   </div>
 </dialog>
 <script src="puzzles.js"></script>
@@ -151,8 +213,8 @@ $("restart").onclick=()=>{
   msg("");render();
 };
 $("copy").onclick=()=>{const t=$("share").textContent;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>$("copy").textContent="Copied!").catch(()=>{$("copy").textContent="Select and copy"})};
-let helpStep=1;function showHelpStep(n){helpStep=n;$("helpPage1").hidden=n!==1;$("helpPage2").hidden=n!==2;$("helpPage3").hidden=n!==3;$("helpTitle").textContent=n===1?"How to play":n===2?"Genetics basics":"Inheritance in Genigma";$("helpBack").style.visibility=n===1?"hidden":"visible";$("helpNext").textContent=n<3?"Next →":"Got it";document.querySelectorAll(".helpDots i").forEach((d,i)=>d.classList.toggle("active",i===n-1))}
-$("help").onclick=()=>{showHelpStep(1);$("helpDialog").showModal()};$("helpNext").onclick=()=>{if(helpStep<3)showHelpStep(helpStep+1);else $("helpDialog").close()};$("helpBack").onclick=()=>showHelpStep(Math.max(1,helpStep-1));$("closeHelp").onclick=()=>$("helpDialog").close();$("helpDialog").onclick=e=>{if(e.target===$("helpDialog"))$("helpDialog").close()};
+let helpStep=1;function showHelpStep(n){helpStep=n;$("helpPage1").hidden=n!==1;$("helpPage2").hidden=n!==2;$("helpTitle").textContent=n===1?"How to play":"Genetics guide";$("helpBack").style.visibility=n===1?"hidden":"visible";$("helpNext").textContent=n===1?"Next →":"Got it";document.querySelectorAll(".helpDots i").forEach((d,i)=>d.classList.toggle("active",i===n-1))}
+$("help").onclick=()=>{showHelpStep(1);$("helpDialog").showModal()};$("helpNext").onclick=()=>{if(helpStep===1)showHelpStep(2);else $("helpDialog").close()};$("helpBack").onclick=()=>showHelpStep(1);$("closeHelp").onclick=()=>$("helpDialog").close();$("helpDialog").onclick=e=>{if(e.target===$("helpDialog"))$("helpDialog").close()};
 render();
 }
 </script>
