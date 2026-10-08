@@ -60,12 +60,24 @@ dialog{width:min(520px,calc(100% - 28px));border:1.5px solid var(--line);border-
       <p class="small">Every couple has exactly two children. Use exclusions as working notes, then confirm one couple ✓ for every child before checking your answer.</p>
     </div>
     <div class="helpPage" id="helpPage2" hidden>
-      <p class="small">The three traits are independent and show <b>incomplete dominance</b>, so heterozygotes have an intermediate phenotype. Each parent passes one of its two alleles to each child. A <b>?</b> means that parent's phenotype is hidden; the clues give facts about them.</p>
+      <p><b>Genes & alleles</b></p>
+      <p class="small">Each trait in Genigma is controlled by a gene. For each trait, an individual has <b>two alleles</b>: one inherited from the mother and one from the father.</p>
+      <p><b>Genotype vs phenotype</b></p>
+      <p class="small"><b>Genotype</b> is the pair of alleles an individual has, such as <b>BB</b>, <b>BW</b> or <b>WW</b>. <b>Phenotype</b> is the visible trait produced by that genotype, such as black, gray or white coat.</p>
+      <div class="trait"><b>Homozygous</b><div class="traitRow"><span>BB<br><small>same alleles</small></span><span>WW<br><small>same alleles</small></span><span><b>Homo</b><br><small>= same</small></span></div></div>
+      <div class="trait"><b>Heterozygous</b><div class="traitRow"><span>BW<br><small>different alleles</small></span><span>PR<br><small>different alleles</small></span><span><b>Hetero</b><br><small>= different</small></span></div></div>
+    </div>
+    <div class="helpPage" id="helpPage3" hidden>
+      <p><b>How inheritance works</b></p>
+      <p class="small">Each parent passes <b>one of their two alleles</b> to each child. So if one parent is <b>BW</b> and the other is <b>WW</b>, their children can be <b>BW</b> or <b>WW</b>, but not <b>BB</b>. Use impossible combinations to rule couples out.</p>
+      <p><b>Incomplete dominance</b></p>
+      <p class="small">In Genigma, heterozygous genotypes have their own intermediate phenotype. This means all three genotypes can look different.</p>
       <div class="trait"><b>Coat</b><div class="traitRow"><span>BB<br>Black</span><span>BW<br>Gray</span><span>WW<br>White</span></div></div>
       <div class="trait"><b>Ears</b><div class="traitRow"><span>PP<br>Pointed</span><span>PR<br>Folded</span><span>RR<br>Round</span></div></div>
       <div class="trait"><b>Pattern</b><div class="traitRow"><span>SS<br>Smooth</span><span>SD<br>Dappled</span><span>DD<br>Spotted</span></div></div>
+      <p class="small"><b>?</b> means a parent's phenotype is hidden. The clues give you information to infer what that parent could be.</p>
     </div>
-    <div class="helpNav"><button class="secondary" id="helpBack" style="visibility:hidden">← Back</button><div class="helpDots"><i class="active"></i><i></i></div><button class="go" id="helpNext">Next →</button></div>
+    <div class="helpNav"><button class="secondary" id="helpBack" style="visibility:hidden">← Back</button><div class="helpDots"><i class="active"></i><i></i><i></i></div><button class="go" id="helpNext">Next →</button></div>
   </div>
 </dialog>
 <script src="puzzles.js"></script>
@@ -139,8 +151,8 @@ $("restart").onclick=()=>{
   msg("");render();
 };
 $("copy").onclick=()=>{const t=$("share").textContent;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>$("copy").textContent="Copied!").catch(()=>{$("copy").textContent="Select and copy"})};
-let helpStep=1;function showHelpStep(n){helpStep=n;$("helpPage1").hidden=n!==1;$("helpPage2").hidden=n!==2;$("helpTitle").textContent=n===1?"How to play":"Genetics guide";$("helpBack").style.visibility=n===1?"hidden":"visible";$("helpNext").textContent=n===1?"Next →":"Got it";document.querySelectorAll(".helpDots i").forEach((d,i)=>d.classList.toggle("active",i===n-1))}
-$("help").onclick=()=>{showHelpStep(1);$("helpDialog").showModal()};$("helpNext").onclick=()=>{if(helpStep===1)showHelpStep(2);else $("helpDialog").close()};$("helpBack").onclick=()=>showHelpStep(1);$("closeHelp").onclick=()=>$("helpDialog").close();$("helpDialog").onclick=e=>{if(e.target===$("helpDialog"))$("helpDialog").close()};
+let helpStep=1;function showHelpStep(n){helpStep=n;$("helpPage1").hidden=n!==1;$("helpPage2").hidden=n!==2;$("helpPage3").hidden=n!==3;$("helpTitle").textContent=n===1?"How to play":n===2?"Genetics basics":"Inheritance in Genigma";$("helpBack").style.visibility=n===1?"hidden":"visible";$("helpNext").textContent=n<3?"Next →":"Got it";document.querySelectorAll(".helpDots i").forEach((d,i)=>d.classList.toggle("active",i===n-1))}
+$("help").onclick=()=>{showHelpStep(1);$("helpDialog").showModal()};$("helpNext").onclick=()=>{if(helpStep<3)showHelpStep(helpStep+1);else $("helpDialog").close()};$("helpBack").onclick=()=>showHelpStep(Math.max(1,helpStep-1));$("closeHelp").onclick=()=>$("helpDialog").close();$("helpDialog").onclick=e=>{if(e.target===$("helpDialog"))$("helpDialog").close()};
 render();
 }
 </script>
