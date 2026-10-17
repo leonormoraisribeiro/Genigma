@@ -465,9 +465,9 @@ dialog[open]::backdrop{animation:fadeIn .3s ease}
     <div class="helpPage" data-page="1">
       <p data-i18n-html="help1"></p>
       <div class="legend" id="legend">
-        <div><button class="chip cA" tabindex="-1">A</button><span></span></div>
-        <div><button class="chip cB s1" tabindex="-1">B</button><span></span></div>
-        <div><button class="chip cC s2" tabindex="-1">C</button><span></span></div>
+        <div><button class="chip cA" tabindex="-1">1</button><span></span></div>
+        <div><button class="chip cB s1" tabindex="-1">2</button><span></span></div>
+        <div><button class="chip cC s2" tabindex="-1">3</button><span></span></div>
       </div>
       <p class="small" data-i18n="help1small"></p>
       <button class="secondary replay" id="helpReplay" data-i18n="replay"></button>
@@ -539,7 +539,7 @@ const THEME = {
   traits: [
     {},                                                  // cor: azul · verde (meio) · amarelo
     {art: ["horns", "unicorn", "antennae"]},             // cabeça: cornos · unicórnio (meio) · antenas
-    {art: ["square", "round", "triangle"]}               // corpo: quadrado · redondo (meio) · triângulo
+    {art: ["square", "round", "triangle"]}               // corpo: quadrado · círculo (meio) · triângulo
   ]
 };
 // Arte final: quando tiveres as imagens, indica o caminho, ex.: "art/{colour}-{head}-{body}.png"
@@ -558,7 +558,7 @@ const TUTORIAL = {p:[[0,0,0],[2,0,1],[0,1,2],[1,2,1],[1,1,0],null], u:[[0,1,2],[
 const TIERS = ["easy", "normal", "hard"];
 const WEEK = ["easy","easy","normal","normal","normal","hard","hard"];   // segunda → domingo
 const LAUNCH = Date.UTC(2026, 9, 12) / 864e5;   // dia do Genigma #1 (12 out 2026) — muda para a data de lançamento
-const TRIES = 3, L = "ABC";
+const TRIES = 3, L = "ABC", NAMES = "123";   // L só serve de chave interna (classes CSS cA/cB/cC); o que se vê são os NAMES
 const K_WELCOME = "gn3-welcome", K_TUT = "gn3-tut", K_LANG = "gn-lang", K_THEME = "gn-theme";
 
 const tierOf = p => p.d || (p.p.every(x => x === null) ? "hard" : p.p.filter(x => x === null).length <= 3 ? "easy" : "normal");
@@ -676,7 +676,7 @@ const longT = f => f.map((x, t) => lk(t, x).toLowerCase()).join(", ");
 // Monstro do guia que só mostra um traço: a linha da cor usa as cores; cabeça e corpo usam monstros brancos (a cor não distrai)
 const mk = (t, x) => t === 0 ? [x, 0, 0] : t === 1 ? [3, x, 0] : [3, 0, x];
 const H = {
-  cp: (c, cap) => `<span class="cp c${L[c]}">${P.cp(L[c], cap)}</span>`,
+  cp: (c, cap) => `<span class="cp c${L[c]}">${P.cp(NAMES[c], cap)}</span>`,
   gt: (t, x) => { const a = x === 2 ? [1, 1] : x === 1 ? [0, 1] : [0, 0], tr = P.traits[t];
     return `<span class="gt" title="${a.map(i => tr.al[i]).join(" + ")}">${a.map(i => tr.ltr[i]).join("")}</span>`; },
   al: (t, a) => `<span class="gt" title="${P.traits[t].al[a]}">${P.traits[t].ltr[a]}</span>`,
@@ -842,12 +842,12 @@ function buildGame() {
     : G.day === today() ? u.dayCase(P.days[G.wd]) : capF(dfmt(G.day, {weekday: "long", day: "numeric", month: "long"}));   // caso do arquivo: mostra a data
   $("clock").hidden = tut;
   $("clock").textContent = fmt(elapsed());
-  $("couples").innerHTML = [0,1,2].map(c => `<div class="box couple c${L[c]}"><span class="coupleTag" aria-label="${u.couple(L[c])}">${L[c]}</span>` +
+  $("couples").innerHTML = [0,1,2].map(c => `<div class="box couple c${L[c]}"><span class="coupleTag" aria-label="${u.couple(NAMES[c])}">${NAMES[c]}</span>` +
     [2*c, 2*c+1].map(k => { const f = Z.p[k], fem = k % 2 === 0, who = fem ? u.mother : u.father;
       return `<div class="parent"><span class="fig">${monSVG(f, `${who}: ${f ? longT(f) : u.hiddenShort(fem)}`, G.faces[k])}</span><span><b>${who}</b><small>${f ? shortT(f) : u.hidden(fem)}</small></span></div>`; }).join("") + `</div>`).join("");
   $("clues").innerHTML = Z.c.map((k, i) => `<li class="clue" data-k="${i}"><button class="clueNum" aria-pressed="false" aria-label="${u.clueAria(i + 1)}">${i + 1}</button><span class="t">${clueHTML(k)}</span></li>`).join("");
   $("rows").innerHTML = Z.u.map((f, i) => `<div class="box pup"><span class="fig">${monSVG(f, `${u.babyAria(i + 1)}: ${longT(f)}`, G.faces[6 + i])}</span><div class="pupInfo"><b>${u.baby(i + 1)}</b><span>${shortT(f)}</span></div><div class="chips">` +
-    [0,1,2].map(c => `<button class="chip c${L[c]}" data-i="${i}" data-c="${c}">${L[c]}</button>`).join("") + `</div></div>`).join("");
+    [0,1,2].map(c => `<button class="chip c${L[c]}" data-i="${i}" data-c="${c}">${NAMES[c]}</button>`).join("") + `</div></div>`).join("");
   updateClues(); updateBoard(); renderEnd(); hideToast();
 }
 function updateClues() {
@@ -864,11 +864,11 @@ function updateBoard() {
     row.querySelectorAll(".chip").forEach((b, c) => {
       const v = G.grid[i][c];
       b.className = `chip c${L[c]} s${v}`; b.disabled = done;
-      b.setAttribute("aria-label", u.chipAria(i + 1, L[c], u.states[v]));
+      b.setAttribute("aria-label", u.chipAria(i + 1, NAMES[c], u.states[v]));
     });
   });
   const cnt = [0,1,2].map(c => G.grid.filter(r => r[c] === 2).length);
-  $("counts").innerHTML = cnt.map((n, c) => `<span class="cnt c${L[c]} ${n === 2 ? "full" : n > 2 ? "over" : ""}">${L[c]} ${n}/2</span>`).join("");
+  $("counts").innerHTML = cnt.map((n, c) => `<span class="cnt c${L[c]} ${n === 2 ? "full" : n > 2 ? "over" : ""}">${NAMES[c]} ${n}/2</span>`).join("");
   coachPulse();
   // Validação ao vivo no botão principal, em vez de só ao submeter
   const check = $("check"), rest = $("restart");
@@ -882,7 +882,7 @@ function updateBoard() {
   const placed = G.grid.filter(r => r.includes(2)).length, over = cnt.findIndex(n => n > 2);
   const ready = placed === 6 && over < 0;
   check.className = ready ? "go" : "go pending";
-  check.textContent = over >= 0 ? u.over(L[over], cnt[over]) : ready ? u.check(TRIES - G.tries) : u.placed(placed);
+  check.textContent = over >= 0 ? u.over(NAMES[over], cnt[over]) : ready ? u.check(TRIES - G.tries) : u.placed(placed);
 }
 function familiesHTML() {
   const Z = G.Z, P_ = Z.g || Z.p, u = P.ui;
@@ -890,7 +890,7 @@ function familiesHTML() {
     const par = [2*c, 2*c+1].map(k => { const who = k % 2 ? u.dad : u.mum;
       return `<figure>${monSVG(P_[k], `${who}: ${P_[k] ? longT(P_[k]) : u.hiddenShort(k % 2 === 0)}`, G.faces[k])}${Z.p[k] === null ? `<span class="was">${u.was(k % 2 === 0)}</span>` : who}</figure>`; }).join("");
     const kids = Z.s.map((x, i) => x === c ? `<figure>${monSVG(Z.u[i], u.babyAria(i + 1), G.faces[6 + i])}#${i + 1}</figure>` : "").join("");
-    return `<div class="fam c${L[c]}"><span class="coupleTag">${L[c]}</span><span class="grp">${par}</span><span class="arrow">→</span><span class="grp">${kids}</span></div>`;
+    return `<div class="fam c${L[c]}"><span class="coupleTag">${NAMES[c]}</span><span class="grp">${par}</span><span class="arrow">→</span><span class="grp">${kids}</span></div>`;
   }).join("");
 }
 function renderEnd() {
@@ -966,14 +966,27 @@ function shareText() {
   const u = P.ui, head = u.shareHead(G.mode === "daily", G.num, P.tier[G.tier]);
   return `${head}\n👾 ${G.done === "win" ? u.shareWin(G.tries, TRIES, fmt(G.elapsed)) : u.shareLose(TRIES)}`;
 }
+// Copiar para o clipboard. Alternativa para browsers sem a API (ex.: páginas sem https, browsers dentro de apps).
+async function copyText(t) {
+  try { await navigator.clipboard.writeText(t); return true; } catch (e) {}
+  try {
+    const ta = document.createElement("textarea");
+    ta.value = t; ta.setAttribute("readonly", ""); ta.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+    (document.querySelector("dialog[open]") || document.body).appendChild(ta); ta.select();   // dentro do diálogo aberto: o resto da página fica inerte e não deixava copiar
+    ta.setSelectionRange(0, t.length);
+    const ok = document.execCommand("copy"); ta.remove(); return ok;
+  } catch (e) { return false; }
+}
 async function share() {
   const text = shareText(), url = /^https?:/.test(location.href) ? location.href.split("#")[0] : "";
+  // O link vai DENTRO do texto. Se o passarmos à parte em "url", o iOS e muitas apps (Mensagens, WhatsApp...)
+  // usam só o link e deitam fora o texto, e o resultado nunca chega a ser partilhado.
+  const full = url ? `${text}\n${url}` : text;
   if (navigator.share) {
-    try { await navigator.share(url ? {text, url} : {text}); return; }
-    catch (e) { if (e && e.name === "AbortError") return; }
+    try { await navigator.share({text: full}); return; }
+    catch (e) { if (e && e.name === "AbortError") return; }   // fechou a folha: não é erro
   }
-  try { await navigator.clipboard.writeText(url ? `${text}\n${url}` : text); toast(P.ui.copied); }
-  catch (e) { toast(P.ui.copyFail); }
+  toast((await copyText(full)) ? P.ui.copied : P.ui.copyFail);
 }
 
 /* ---------- Folhas: abrir, fechar no mesmo caminho, arrastar para fechar ---------- */

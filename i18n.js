@@ -1,10 +1,12 @@
 /* =====================================================================
    GENIGMA — textos em português (PT-PT), inglês e dinamarquês.
    Cada idioma tem a mesma estrutura. Para corrigir um texto, muda-o aqui.
-   As letras dos alelos estão em "ltr" de cada característica (ex.: ltr: ["L", "M"]).
-   Evita A, B e C nas letras: são os nomes dos casais.
+   As letras dos alelos ("ltr") são IGUAIS nos três idiomas, em inglês, e a inicial da palavra:
+   cor B/Y (Blue/Yellow), cabeça H/A (Horns/Antennae), corpo S/T (Square/Triangle).
+   O aspeto do meio é sempre a junção das duas letras: BY verde, HA unicórnio, ST círculo.
+   Os casais chamam-se 1, 2 e 3 (assim não se confundem com as letras dos alelos).
    As funções recebem "h" (ajudantes do jogo):
-     h.cp(c, cap)  → nome do casal com cor ("casal A" / "Casal A")
+     h.cp(c, cap)  → nome do casal com cor ("casal 1" / "Casal 1")
      h.gt(t, x)    → par de letras (t = 0 cor, 1 cabeça, 2 corpo; x = 0/1/2)
      h.al(t, a)    → uma letra (a = 0 ou 1)
      h.fig(f, txt) → monstrinho pequeno com legenda por baixo (página 3 da ajuda)
@@ -20,11 +22,11 @@ pt: {
   days: ["segunda-feira", "terça-feira", "quarta-feira", "quinta-feira", "sexta-feira", "sábado", "domingo"],
   tier: {easy: "Fácil", normal: "Normal", hard: "Difícil"},
   traits: [
-    {name: "cor", looks: ["Azul", "Verde", "Amarelo"], al: ["azul", "amarelo"], ltr: ["L", "M"],
+    {name: "cor", looks: ["Azul", "Verde", "Amarelo"], al: ["azul", "amarelo"], ltr: ["B", "Y"],
      phr: ["filhos azuis", "filhos verdes", "filhos amarelos"]},
-    {name: "cabeça", looks: ["Cornos", "Unicórnio", "Antenas"], al: ["corno", "antena"], ltr: ["R", "N"],
+    {name: "cabeça", looks: ["Cornos", "Unicórnio", "Antenas"], al: ["corno", "antena"], ltr: ["H", "A"],
      phr: ["filhos com cornos", "filhos com corno de unicórnio", "filhos com antenas"]},
-    {name: "forma do corpo", looks: ["Quadrado", "Redondo", "Triângulo"], al: ["quadrado", "triângulo"], ltr: ["Q", "T"],
+    {name: "forma do corpo", looks: ["Quadrado", "Círculo", "Triângulo"], al: ["quadrado", "triângulo"], ltr: ["S", "T"],
      phr: ["filhos quadrados", "filhos redondos", "filhos triangulares"]}
   ],
   cp: (c, cap) => (cap ? "Casal " : "casal ") + c,
@@ -47,7 +49,7 @@ pt: {
     backAria: "Voltar", helpAria: "Como jogar e guia de genética", close: "Fechar", time: "Tempo",
     gameSub: "Os filhos de três casais de monstros ficaram todos trocados. Cada casal tem exatamente 2 filhos.",
     couples: "Os casais", clues: "As pistas", tapCross: "Toca para riscar", babies: "Os filhos perdidos",
-    hint: "Toca no A, B ou C uma vez para excluir (✕), duas vezes para escolher (✓) e uma terceira vez para limpar.",
+    hint: "Toca no 1, 2 ou 3 uma vez para excluir (✕), duas vezes para escolher (✓) e uma terceira vez para limpar.",
     tutorial: "Tutorial", guided: "Caso guiado", practiceTitle: "Treino", practiceCase: "Caso de treino", dayCase: d => `Caso de ${d}`,
     mother: "Mãe", father: "Pai", mum: "Mãe", dad: "Pai",
     hidden: fem => fem ? "Escondida: vê as pistas" : "Escondido: vê as pistas", hiddenShort: fem => fem ? "escondida" : "escondido", was: fem => fem ? "estava escondida" : "estava escondido",
@@ -91,8 +93,8 @@ pt: {
         <dt>“…é ${h.T("homozygous")} ${h.gt(0, 0)} para a cor”</dt><dd>As suas duas letras para a cor são ${h.al(0, 0)}. Dá ${h.al(0, 0)} a todos os filhos.</dd>
         <dt>“…é ${h.T("heterozygous")} (${h.gt(0, 1)}) para a cor”</dt><dd>Tem uma letra de cada, por isso pode dar qualquer uma.</dd>
         <dt>“…tem pelo menos um ${h.T("allele")} ${h.al(0, 1)} para a cor”</dt><dd>É ${h.gt(0, 1)} ou ${h.gt(0, 2)}. Nunca é ${h.gt(0, 0)}.</dd>
-        <dt>“O casal A nunca pode ter filhos amarelos ${h.gt(0, 2)}”</dt><dd>Pelo menos um dos pais não tem ${h.al(0, 1)} para dar, por isso esse progenitor é ${h.gt(0, 0)}.</dd>
-        <dt>“O casal A pode ter filhos verdes ${h.gt(0, 1)}”</dt><dd>Um dos pais consegue dar ${h.al(0, 0)} e o outro consegue dar ${h.al(0, 1)}.</dd>
+        <dt>“O casal 1 nunca pode ter filhos amarelos ${h.gt(0, 2)}”</dt><dd>Pelo menos um dos pais não tem ${h.al(0, 1)} para dar, por isso esse progenitor é ${h.gt(0, 0)}.</dd>
+        <dt>“O casal 1 pode ter filhos verdes ${h.gt(0, 1)}”</dt><dd>Um dos pais consegue dar ${h.al(0, 0)} e o outro consegue dar ${h.al(0, 1)}.</dd>
         <dt>“Os filhos #2 e #5 são do mesmo casal”</dt><dd>Têm os mesmos pais. “De casais diferentes” quer dizer o contrário.</dd>
       </dl>
       <p class="small">As pistas sobre a cabeça e a forma do corpo leem-se da mesma maneira.</p>`,
@@ -107,7 +109,7 @@ pt: {
     allele:       {t: "Alelo", d: "Uma versão de um gene. Cada monstro tem dois alelos para cada característica: um da mãe e outro do pai.", ex: `A cor tem dois alelos: ${h.al(0, 0)} azul e ${h.al(0, 1)} amarelo.`},
     homozygous:   {t: "Homozigótico", d: `Os dois alelos de uma característica são iguais, como ${h.gt(0, 0)} ou ${h.gt(0, 2)}. Um progenitor homozigótico só consegue passar esse alelo.`, ex: `Um progenitor amarelo ${h.gt(0, 2)} passa sempre ${h.al(0, 1)}.`},
     heterozygous: {t: "Heterozigótico", d: `Os dois alelos de uma característica são diferentes, como ${h.gt(0, 1)}. Um progenitor heterozigótico pode passar qualquer um deles: é como atirar uma moeda ao ar para cada filho.`, ex: `Um progenitor verde ${h.gt(0, 1)} pode passar ${h.al(0, 0)} ou ${h.al(0, 1)}.`},
-    dominance:    {t: "Dominância incompleta", d: "Nenhum alelo ganha: um de cada dá um terceiro aspeto, intermédio. É por isso que consegues sempre saber os alelos de um monstro pelo aspeto.", ex: `${h.gt(0, 1)} = verde · ${h.gt(1, 1)} = unicórnio · ${h.gt(2, 1)} = redondo`},
+    dominance:    {t: "Dominância incompleta", d: "Nenhum alelo ganha: um de cada dá um terceiro aspeto, intermédio. É por isso que consegues sempre saber os alelos de um monstro pelo aspeto.", ex: `${h.gt(0, 1)} = verde · ${h.gt(1, 1)} = unicórnio · ${h.gt(2, 1)} = círculo`},
     genotype:     {t: "Genótipo", d: "O par de alelos que um monstro tem para uma característica, escrito com duas letras.", ex: `O genótipo de cor de um monstro verde é ${h.gt(0, 1)}.`},
     trait:        {t: "Característica", d: "Algo que os pais passam aos filhos. Aqui há três: cor, cabeça e forma do corpo. As caras não contam: são só para dar graça."},
     inherit:      {t: "Herdar", d: "Receber de um progenitor. Cada filho herda, para cada característica, um alelo da mãe e outro do pai."}
@@ -131,22 +133,22 @@ pt: {
     {title: "A regra de ouro",
      text: h => `<p>Um filho recebe <b>uma</b> letra da mãe e <b>uma</b> do pai, para cada característica.</p><p>Por isso, um filho só pode ter letras que os pais lhe consigam dar.</p>`},
     {text: h => `<p>Olha para o ${h.cp(0)}: tanto a mãe como o pai têm <b>cornos</b> ${h.gt(1, 0)}. Só têm ${h.al(1, 0)} para dar…</p><p>…por isso todos os filhos deles também têm de ter cornos.</p>`},
-    {doing: "Toca duas vezes no A do #2 e do #5",
-     text: h => `<p>Só os filhos <b>#2</b> e <b>#5</b> têm cornos, por isso são do ${h.cp(0)}!</p><p>Toca <b>duas vezes</b> no <b>A</b> de cada um. Um toque quer dizer ✕ (excluído); dois toques querem dizer ✓ (é filho deles).</p>`},
+    {doing: "Toca duas vezes no 1 do #2 e do #5",
+     text: h => `<p>Só os filhos <b>#2</b> e <b>#5</b> têm cornos, por isso são do ${h.cp(0)}!</p><p>Toca <b>duas vezes</b> no <b>1</b> de cada um. Um toque quer dizer ✕ (excluído); dois toques querem dizer ✓ (é filho deles).</p>`},
     {text: h => `<p>O ${h.cp(0)} já tem os seus 2 filhos: o contador fica preenchido quando um casal está completo. Mais nenhum filho pode ser deles.</p>`},
-    {doing: "Toca uma vez no B do #3",
-     text: h => `<p>O filho <b>#3</b> ${h.icoU(2)} é <b>amarelo</b> ${h.gt(0, 2)}, por isso precisa de um ${h.al(0, 1)} de cada progenitor.</p><p>A mãe do ${h.cp(1)} ${h.icoP(2)} é <b>azul</b> ${h.gt(0, 0)}: não tem nenhum ${h.al(0, 1)} para dar. Toca <b>uma vez</b> no <b>B</b> do #3 para excluir o ${h.cp(1)}.</p>`},
-    {doing: "Toca duas vezes no C do #3",
-     text: h => `<p>O #3 não pode ser do A (já está completo) nem do B. Só sobra o ${h.cp(2)}!</p>`},
-    {doing: "Toca duas vezes no B do #1",
-     text: h => `<p>O filho <b>#1</b> ${h.icoU(0)} é um <b>triângulo</b> ${h.gt(2, 2)}, por isso precisa de um ${h.al(2, 1)} de cada progenitor.</p><p>A mãe do ${h.cp(2)} ${h.icoP(4)} é um <b>quadrado</b> ${h.gt(2, 0)}: não tem ${h.al(2, 1)}. E o A está completo… por isso o #1 tem de ser do ${h.cp(1)}.</p>`},
-    {text: h => `<p>Faltam dois filhos: o <b>#4</b> e o <b>#6</b>. Um é do B e o outro é do C, e só pelo aspeto qualquer um deles podia encaixar…</p><p>…a não ser que descubramos mais sobre o pai do ${h.cp(2)}.</p>`},
+    {doing: "Toca uma vez no 2 do #3",
+     text: h => `<p>O filho <b>#3</b> ${h.icoU(2)} é <b>amarelo</b> ${h.gt(0, 2)}, por isso precisa de um ${h.al(0, 1)} de cada progenitor.</p><p>A mãe do ${h.cp(1)} ${h.icoP(2)} é <b>azul</b> ${h.gt(0, 0)}: não tem nenhum ${h.al(0, 1)} para dar. Toca <b>uma vez</b> no <b>2</b> do #3 para excluir o ${h.cp(1)}.</p>`},
+    {doing: "Toca duas vezes no 3 do #3",
+     text: h => `<p>O #3 não pode ser do casal 1 (já está completo) nem do casal 2. Só sobra o ${h.cp(2)}!</p>`},
+    {doing: "Toca duas vezes no 2 do #1",
+     text: h => `<p>O filho <b>#1</b> ${h.icoU(0)} é um <b>triângulo</b> ${h.gt(2, 2)}, por isso precisa de um ${h.al(2, 1)} de cada progenitor.</p><p>A mãe do ${h.cp(2)} ${h.icoP(4)} é um <b>quadrado</b> ${h.gt(2, 0)}: não tem ${h.al(2, 1)}. E o casal 1 está completo… por isso o #1 tem de ser do ${h.cp(1)}.</p>`},
+    {text: h => `<p>Faltam dois filhos: o <b>#4</b> e o <b>#6</b>. Um é do casal 2 e o outro é do casal 3, e só pelo aspeto qualquer um deles podia encaixar…</p><p>…a não ser que descubramos mais sobre o pai do ${h.cp(2)}.</p>`},
     {text: h => `<p>O pai do ${h.cp(2)} tem um <b>?</b>: está escondido, por isso não consegues ver o aspeto dele. É para isso que servem as pistas.</p>`},
     {doing: "Toca na palavra “homozigótico”",
      text: h => `<p>Esta é a pista sobre ele. Toca numa palavra com um pequeno <span class="iDot">i</span> para veres o que quer dizer.</p>`},
-    {doing: "Toca duas vezes no B do #4",
-     text: h => `<p>Então o pai do C é ${h.gt(1, 0)}: só pode passar ${h.al(1, 0)}.</p><p>O filho <b>#4</b> ${h.icoU(3)} tem <b>antenas</b> ${h.gt(1, 2)} e precisa de um ${h.al(1, 1)} de cada progenitor. O pai do ${h.cp(2)} não tem ${h.al(1, 1)} para lhe dar, por isso o #4 é do ${h.cp(1)}!</p>`},
-    {doing: "Toca duas vezes no C do #6",
+    {doing: "Toca duas vezes no 2 do #4",
+     text: h => `<p>Então o pai do casal 3 é ${h.gt(1, 0)}: só pode passar ${h.al(1, 0)}.</p><p>O filho <b>#4</b> ${h.icoU(3)} tem <b>antenas</b> ${h.gt(1, 2)} e precisa de um ${h.al(1, 1)} de cada progenitor. O pai do ${h.cp(2)} não tem ${h.al(1, 1)} para lhe dar, por isso o #4 é do ${h.cp(1)}!</p>`},
+    {doing: "Toca duas vezes no 3 do #6",
      text: h => `<p>E o último, o <b>#6</b>, vai para casa do ${h.cp(2)}.</p>`},
     {doing: "Toca na pista",
      text: h => `<p>Já usaste a pista, por isso toca nela para a riscar. Quando há muitas pistas, isto ajuda-te a não te perderes.</p>`},
@@ -163,11 +165,11 @@ en: {
   days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
   tier: {easy: "Easy", normal: "Normal", hard: "Hard"},
   traits: [
-    {name: "colour", looks: ["Blue", "Green", "Yellow"], al: ["blue", "yellow"], ltr: ["L", "Y"],
+    {name: "colour", looks: ["Blue", "Green", "Yellow"], al: ["blue", "yellow"], ltr: ["B", "Y"],
      phr: ["blue babies", "green babies", "yellow babies"]},
-    {name: "head", looks: ["Horns", "Unicorn", "Antennae"], al: ["horn", "antenna"], ltr: ["H", "N"],
+    {name: "head", looks: ["Horns", "Unicorn", "Antennae"], al: ["horn", "antenna"], ltr: ["H", "A"],
      phr: ["babies with horns", "babies with a unicorn horn", "babies with antennae"]},
-    {name: "body shape", looks: ["Square", "Round", "Triangle"], al: ["square", "triangle"], ltr: ["S", "T"],
+    {name: "body shape", looks: ["Square", "Circle", "Triangle"], al: ["square", "triangle"], ltr: ["S", "T"],
      phr: ["square babies", "round babies", "triangular babies"]}
   ],
   cp: c => "Couple " + c,
@@ -190,7 +192,7 @@ en: {
     backAria: "Back", helpAria: "How to play and genetics guide", close: "Close", time: "Time",
     gameSub: "Three monster couples got their babies mixed up. Each couple has exactly 2 babies.",
     couples: "The couples", clues: "The clues", tapCross: "Tap to cross off", babies: "The lost babies",
-    hint: "Tap A, B or C once to rule it out (✕), twice to choose it (✓), a third time to clear.",
+    hint: "Tap 1, 2 or 3 once to rule it out (✕), twice to choose it (✓), a third time to clear.",
     tutorial: "Tutorial", guided: "Guided case", practiceTitle: "Practice", practiceCase: "Practice case", dayCase: d => `${d}'s case`,
     mother: "Mother", father: "Father", mum: "Mum", dad: "Dad",
     hidden: () => "Hidden: see clues", hiddenShort: () => "hidden", was: () => "was hidden",
@@ -234,8 +236,8 @@ en: {
         <dt>“…is ${h.T("homozygous")} ${h.gt(0, 0)} for colour”</dt><dd>Both of its colour letters are ${h.al(0, 0)}. It gives ${h.al(0, 0)} to every baby.</dd>
         <dt>“…is ${h.T("heterozygous")} (${h.gt(0, 1)}) for colour”</dt><dd>It has one of each letter, so it can give either one.</dd>
         <dt>“…has at least one ${h.al(0, 1)} ${h.T("allele")} for colour”</dt><dd>It is ${h.gt(0, 1)} or ${h.gt(0, 2)}. Never ${h.gt(0, 0)}.</dd>
-        <dt>“Couple A can never have yellow babies ${h.gt(0, 2)}”</dt><dd>At least one parent has no ${h.al(0, 1)} to give, so that parent is ${h.gt(0, 0)}.</dd>
-        <dt>“Couple A can have green babies ${h.gt(0, 1)}”</dt><dd>One parent can give ${h.al(0, 0)} and the other can give ${h.al(0, 1)}.</dd>
+        <dt>“Couple 1 can never have yellow babies ${h.gt(0, 2)}”</dt><dd>At least one parent has no ${h.al(0, 1)} to give, so that parent is ${h.gt(0, 0)}.</dd>
+        <dt>“Couple 1 can have green babies ${h.gt(0, 1)}”</dt><dd>One parent can give ${h.al(0, 0)} and the other can give ${h.al(0, 1)}.</dd>
         <dt>“Babies #2 and #5 are from the same couple”</dt><dd>They have the same parents. “Different couples” means the opposite.</dd>
       </dl>
       <p class="small">Clues about the head and the body shape read the same way.</p>`,
@@ -250,7 +252,7 @@ en: {
     allele:       {t: "Allele", d: "One version of a gene. Every monster carries two alleles for each trait: one from its mother and one from its father.", ex: `Colour has two alleles: ${h.al(0, 0)} blue and ${h.al(0, 1)} yellow.`},
     homozygous:   {t: "Homozygous", d: `Both alleles for a trait are the same, like ${h.gt(0, 0)} or ${h.gt(0, 2)}. A homozygous parent can only ever pass on that one allele.`, ex: `A yellow ${h.gt(0, 2)} parent always passes on ${h.al(0, 1)}.`},
     heterozygous: {t: "Heterozygous", d: `The two alleles for a trait are different, like ${h.gt(0, 1)}. A heterozygous parent can pass on either one: it's a coin toss for each baby.`, ex: `A green ${h.gt(0, 1)} parent can pass on ${h.al(0, 0)} or ${h.al(0, 1)}.`},
-    dominance:    {t: "Incomplete dominance", d: "Neither allele wins: one of each gives a third, in-between look. That's why you can always tell a monster's alleles from its looks.", ex: `${h.gt(0, 1)} = green · ${h.gt(1, 1)} = unicorn · ${h.gt(2, 1)} = round`},
+    dominance:    {t: "Incomplete dominance", d: "Neither allele wins: one of each gives a third, in-between look. That's why you can always tell a monster's alleles from its looks.", ex: `${h.gt(0, 1)} = green · ${h.gt(1, 1)} = unicorn · ${h.gt(2, 1)} = circle`},
     genotype:     {t: "Genotype", d: "The pair of alleles a monster carries for a trait, written as two letters.", ex: `A green monster's colour genotype is ${h.gt(0, 1)}.`},
     trait:        {t: "Trait", d: "A feature that parents pass on to their babies. Here there are three: colour, head and body shape. Faces don't count: they're just for fun."},
     inherit:      {t: "Inherit", d: "To receive from a parent. For each trait, every baby inherits one allele from its mother and one from its father."}
@@ -274,22 +276,22 @@ en: {
     {title: "The golden rule",
      text: h => `<p>A baby gets <b>one</b> letter from its mother and <b>one</b> from its father, for every trait.</p><p>So a baby can only have letters that its parents are able to give.</p>`},
     {text: h => `<p>Look at ${h.cp(0)}: mum and dad both have <b>horns</b> ${h.gt(1, 0)}. They only have ${h.al(1, 0)} to give…</p><p>…so every baby of theirs must have horns too.</p>`},
-    {doing: "Tap A twice on #2 and on #5",
-     text: h => `<p>Only babies <b>#2</b> and <b>#5</b> have horns, so they belong to ${h.cp(0)}!</p><p>Tap <b>A</b> on each one <b>twice</b>. Once means ✕ (ruled out); twice means ✓ (their baby).</p>`},
-    {text: h => `<p>${h.cp(0)} now has its 2 babies: the counter fills in when a couple is complete. No other baby can belong to A.</p>`},
-    {doing: "Tap B once on #3",
-     text: h => `<p>Baby <b>#3</b> ${h.icoU(2)} is <b>yellow</b> ${h.gt(0, 2)}, so it needs one ${h.al(0, 1)} from each parent.</p><p>${h.cp(1)}'s mother ${h.icoP(2)} is <b>blue</b> ${h.gt(0, 0)}: she has no ${h.al(0, 1)} to give. Tap <b>B</b> on #3 <b>once</b> to rule out ${h.cp(1)}.</p>`},
-    {doing: "Tap C twice on #3",
-     text: h => `<p>#3 can't belong to A (they're complete) and it can't belong to B. That leaves ${h.cp(2)}!</p>`},
-    {doing: "Tap B twice on #1",
-     text: h => `<p>Baby <b>#1</b> ${h.icoU(0)} is a <b>triangle</b> ${h.gt(2, 2)}, so it needs one ${h.al(2, 1)} from each parent.</p><p>${h.cp(2)}'s mother ${h.icoP(4)} is a <b>square</b> ${h.gt(2, 0)}: she has no ${h.al(2, 1)}. And A is complete… so #1 must belong to ${h.cp(1)}.</p>`},
-    {text: h => `<p>Two babies left: <b>#4</b> and <b>#6</b>. One belongs to B and the other to C, and on looks alone either of them could fit…</p><p>…unless we find out more about ${h.cp(2)}'s father.</p>`},
+    {doing: "Tap 1 twice on #2 and on #5",
+     text: h => `<p>Only babies <b>#2</b> and <b>#5</b> have horns, so they belong to ${h.cp(0)}!</p><p>Tap <b>1</b> on each one <b>twice</b>. Once means ✕ (ruled out); twice means ✓ (their baby).</p>`},
+    {text: h => `<p>${h.cp(0)} now has its 2 babies: the counter fills in when a couple is complete. No other baby can belong to couple 1.</p>`},
+    {doing: "Tap 2 once on #3",
+     text: h => `<p>Baby <b>#3</b> ${h.icoU(2)} is <b>yellow</b> ${h.gt(0, 2)}, so it needs one ${h.al(0, 1)} from each parent.</p><p>${h.cp(1)}'s mother ${h.icoP(2)} is <b>blue</b> ${h.gt(0, 0)}: she has no ${h.al(0, 1)} to give. Tap <b>2</b> on #3 <b>once</b> to rule out ${h.cp(1)}.</p>`},
+    {doing: "Tap 3 twice on #3",
+     text: h => `<p>#3 can't belong to couple 1 (they're complete) and it can't belong to couple 2. That leaves ${h.cp(2)}!</p>`},
+    {doing: "Tap 2 twice on #1",
+     text: h => `<p>Baby <b>#1</b> ${h.icoU(0)} is a <b>triangle</b> ${h.gt(2, 2)}, so it needs one ${h.al(2, 1)} from each parent.</p><p>${h.cp(2)}'s mother ${h.icoP(4)} is a <b>square</b> ${h.gt(2, 0)}: she has no ${h.al(2, 1)}. And couple 1 is complete… so #1 must belong to ${h.cp(1)}.</p>`},
+    {text: h => `<p>Two babies left: <b>#4</b> and <b>#6</b>. One belongs to couple 2 and the other to couple 3, and on looks alone either of them could fit…</p><p>…unless we find out more about ${h.cp(2)}'s father.</p>`},
     {text: h => `<p>${h.cp(2)}'s father has a <b>?</b>: he's hidden, so you can't see what he looks like. That's what the clues are for.</p>`},
     {doing: "Tap the word “homozygous”",
      text: h => `<p>Here's the clue about him. Tap any word with a little <span class="iDot">i</span> to see what it means.</p>`},
-    {doing: "Tap B twice on #4",
-     text: h => `<p>So C's father is ${h.gt(1, 0)}: he can only pass on ${h.al(1, 0)}.</p><p>Baby <b>#4</b> ${h.icoU(3)} has <b>antennae</b> ${h.gt(1, 2)} and needs one ${h.al(1, 1)} from each parent. ${h.cp(2)}'s father has no ${h.al(1, 1)} to give, so #4 belongs to ${h.cp(1)}!</p>`},
-    {doing: "Tap C twice on #6",
+    {doing: "Tap 2 twice on #4",
+     text: h => `<p>So couple 3's father is ${h.gt(1, 0)}: he can only pass on ${h.al(1, 0)}.</p><p>Baby <b>#4</b> ${h.icoU(3)} has <b>antennae</b> ${h.gt(1, 2)} and needs one ${h.al(1, 1)} from each parent. ${h.cp(2)}'s father has no ${h.al(1, 1)} to give, so #4 belongs to ${h.cp(1)}!</p>`},
+    {doing: "Tap 3 twice on #6",
      text: h => `<p>And the last one, <b>#6</b>, goes home to ${h.cp(2)}.</p>`},
     {doing: "Tap the clue",
      text: h => `<p>You've used the clue, so tap it to cross it off. When there are lots of clues, this helps you keep track.</p>`},
@@ -306,11 +308,11 @@ da: {
   days: ["mandag", "tirsdag", "onsdag", "torsdag", "fredag", "lørdag", "søndag"],
   tier: {easy: "Let", normal: "Normal", hard: "Svær"},
   traits: [
-    {name: "farve", looks: ["Blå", "Grøn", "Gul"], al: ["blå", "gul"], ltr: ["L", "G"],
+    {name: "farve", looks: ["Blå", "Grøn", "Gul"], al: ["blå", "gul"], ltr: ["B", "Y"],
      phr: ["blå unger", "grønne unger", "gule unger"]},
-    {name: "hoved", looks: ["Horn", "Enhjørning", "Antenner"], al: ["horn", "antenne"], ltr: ["H", "N"],
+    {name: "hoved", looks: ["Horn", "Enhjørning", "Antenner"], al: ["horn", "antenne"], ltr: ["H", "A"],
      phr: ["unger med horn", "unger med enhjørningehorn", "unger med antenner"]},
-    {name: "kropsform", looks: ["Firkant", "Rund", "Trekant"], al: ["firkant", "trekant"], ltr: ["F", "T"],
+    {name: "kropsform", looks: ["Firkant", "Cirkel", "Trekant"], al: ["firkant", "trekant"], ltr: ["S", "T"],
      phr: ["firkantede unger", "runde unger", "trekantede unger"]}
   ],
   cp: (c, cap) => (cap ? "Par " : "par ") + c,
@@ -333,7 +335,7 @@ da: {
     backAria: "Tilbage", helpAria: "Sådan spiller du og genetikguide", close: "Luk", time: "Tid",
     gameSub: "Tre monsterpar har fået deres unger blandet sammen. Hvert par har præcis 2 unger.",
     couples: "Parrene", clues: "Sporene", tapCross: "Tryk for at strege ud", babies: "De bortkomne unger",
-    hint: "Tryk på A, B eller C én gang for at udelukke (✕), to gange for at vælge (✓) og en tredje gang for at rydde.",
+    hint: "Tryk på 1, 2 eller 3 én gang for at udelukke (✕), to gange for at vælge (✓) og en tredje gang for at rydde.",
     tutorial: "Introduktion", guided: "Guidet sag", practiceTitle: "Træning", practiceCase: "Træningssag", dayCase: d => `${d[0].toUpperCase() + d.slice(1)}ens sag`,
     mother: "Mor", father: "Far", mum: "Mor", dad: "Far",
     hidden: () => "Skjult: se sporene", hiddenShort: () => "skjult", was: () => "var skjult",
@@ -377,8 +379,8 @@ da: {
         <dt>“…er ${h.T("homozygous")} ${h.gt(0, 0)} for farven”</dt><dd>Begge farvebogstaver er ${h.al(0, 0)}. Den giver ${h.al(0, 0)} til alle sine unger.</dd>
         <dt>“…er ${h.T("heterozygous")} (${h.gt(0, 1)}) for farven”</dt><dd>Den har ét af hvert bogstav, så den kan give det ene eller det andet.</dd>
         <dt>“…har mindst én ${h.T("allele")} ${h.al(0, 1)} for farven”</dt><dd>Den er ${h.gt(0, 1)} eller ${h.gt(0, 2)}. Aldrig ${h.gt(0, 0)}.</dd>
-        <dt>“Par A kan aldrig få gule unger ${h.gt(0, 2)}”</dt><dd>Mindst én af forældrene har intet ${h.al(0, 1)} at give, så den forælder er ${h.gt(0, 0)}.</dd>
-        <dt>“Par A kan få grønne unger ${h.gt(0, 1)}”</dt><dd>Den ene forælder kan give ${h.al(0, 0)}, og den anden kan give ${h.al(0, 1)}.</dd>
+        <dt>“Par 1 kan aldrig få gule unger ${h.gt(0, 2)}”</dt><dd>Mindst én af forældrene har intet ${h.al(0, 1)} at give, så den forælder er ${h.gt(0, 0)}.</dd>
+        <dt>“Par 1 kan få grønne unger ${h.gt(0, 1)}”</dt><dd>Den ene forælder kan give ${h.al(0, 0)}, og den anden kan give ${h.al(0, 1)}.</dd>
         <dt>“Unge #2 og #5 er fra samme par”</dt><dd>De har de samme forældre. “Forskellige par” betyder det modsatte.</dd>
       </dl>
       <p class="small">Spor om hovedet og kropsformen læses på samme måde.</p>`,
@@ -393,7 +395,7 @@ da: {
     allele:       {t: "Allel", d: "En udgave af et gen. Hvert monster har to alleler for hver egenskab: én fra mor og én fra far.", ex: `Farve har to alleler: ${h.al(0, 0)} blå og ${h.al(0, 1)} gul.`},
     homozygous:   {t: "Homozygot", d: `Begge alleler for en egenskab er ens, fx ${h.gt(0, 0)} eller ${h.gt(0, 2)}. En homozygot forælder kan kun give én slags allel videre.`, ex: `En gul ${h.gt(0, 2)}-forælder giver altid ${h.al(0, 1)} videre.`},
     heterozygous: {t: "Heterozygot", d: `De to alleler for en egenskab er forskellige, fx ${h.gt(0, 1)}. En heterozygot forælder kan give den ene eller den anden videre: det er plat eller krone for hver unge.`, ex: `En grøn ${h.gt(0, 1)}-forælder kan give ${h.al(0, 0)} eller ${h.al(0, 1)} videre.`},
-    dominance:    {t: "Ufuldstændig dominans", d: "Ingen allel vinder: én af hver giver et tredje udseende midt imellem. Derfor kan du altid se et monsters alleler på dets udseende.", ex: `${h.gt(0, 1)} = grøn · ${h.gt(1, 1)} = enhjørning · ${h.gt(2, 1)} = rund`},
+    dominance:    {t: "Ufuldstændig dominans", d: "Ingen allel vinder: én af hver giver et tredje udseende midt imellem. Derfor kan du altid se et monsters alleler på dets udseende.", ex: `${h.gt(0, 1)} = grøn · ${h.gt(1, 1)} = enhjørning · ${h.gt(2, 1)} = cirkel`},
     genotype:     {t: "Genotype", d: "Det par alleler, et monster har for en egenskab, skrevet med to bogstaver.", ex: `Et grønt monsters farvegenotype er ${h.gt(0, 1)}.`},
     trait:        {t: "Egenskab", d: "Noget, forældrene giver videre til deres unger. Her er der tre: farve, hoved og kropsform. Ansigterne tæller ikke: de er bare for sjov."},
     inherit:      {t: "Arve", d: "At få noget fra en forælder. For hver egenskab arver hver unge én allel fra sin mor og én fra sin far."}
@@ -417,22 +419,22 @@ da: {
     {title: "Den gyldne regel",
      text: h => `<p>En unge får <b>ét</b> bogstav fra sin mor og <b>ét</b> fra sin far for hver egenskab.</p><p>Så en unge kan kun have bogstaver, som forældrene kan give den.</p>`},
     {text: h => `<p>Se på ${h.cp(0)}: både mor og far har <b>horn</b> ${h.gt(1, 0)}. De har kun ${h.al(1, 0)} at give…</p><p>…så alle deres unger skal også have horn.</p>`},
-    {doing: "Tryk to gange på A ved #2 og #5",
-     text: h => `<p>Kun unge <b>#2</b> og <b>#5</b> har horn, så de hører til ${h.cp(0)}!</p><p>Tryk <b>to gange</b> på <b>A</b> ved hver af dem. Én gang betyder ✕ (udelukket); to gange betyder ✓ (deres unge).</p>`},
+    {doing: "Tryk to gange på 1 ved #2 og #5",
+     text: h => `<p>Kun unge <b>#2</b> og <b>#5</b> har horn, så de hører til ${h.cp(0)}!</p><p>Tryk <b>to gange</b> på <b>1</b> ved hver af dem. Én gang betyder ✕ (udelukket); to gange betyder ✓ (deres unge).</p>`},
     {text: h => `<p>${h.cp(0, true)} har nu sine 2 unger: tælleren bliver fyldt ud, når et par er fuldt. Ingen andre unger kan være deres.</p>`},
-    {doing: "Tryk én gang på B ved #3",
-     text: h => `<p>Unge <b>#3</b> ${h.icoU(2)} er <b>gul</b> ${h.gt(0, 2)}, så den skal have ét ${h.al(0, 1)} fra hver forælder.</p><p>Moren til ${h.cp(1)} ${h.icoP(2)} er <b>blå</b> ${h.gt(0, 0)}: hun har intet ${h.al(0, 1)} at give. Tryk <b>én gang</b> på <b>B</b> ved #3 for at udelukke ${h.cp(1)}.</p>`},
-    {doing: "Tryk to gange på C ved #3",
-     text: h => `<p>#3 kan ikke høre til A (A er fuldt), og den kan heller ikke høre til B. Så er der kun ${h.cp(2)} tilbage!</p>`},
-    {doing: "Tryk to gange på B ved #1",
-     text: h => `<p>Unge <b>#1</b> ${h.icoU(0)} er en <b>trekant</b> ${h.gt(2, 2)}, så den skal have ét ${h.al(2, 1)} fra hver forælder.</p><p>Moren til ${h.cp(2)} ${h.icoP(4)} er en <b>firkant</b> ${h.gt(2, 0)}: hun har intet ${h.al(2, 1)}. Og A er fuldt… så #1 må høre til ${h.cp(1)}.</p>`},
-    {text: h => `<p>Der er to unger tilbage: <b>#4</b> og <b>#6</b>. Den ene hører til B, og den anden til C. Ud fra udseendet kunne de begge passe…</p><p>…medmindre vi finder ud af mere om faren til ${h.cp(2)}.</p>`},
+    {doing: "Tryk én gang på 2 ved #3",
+     text: h => `<p>Unge <b>#3</b> ${h.icoU(2)} er <b>gul</b> ${h.gt(0, 2)}, så den skal have ét ${h.al(0, 1)} fra hver forælder.</p><p>Moren til ${h.cp(1)} ${h.icoP(2)} er <b>blå</b> ${h.gt(0, 0)}: hun har intet ${h.al(0, 1)} at give. Tryk <b>én gang</b> på <b>2</b> ved #3 for at udelukke ${h.cp(1)}.</p>`},
+    {doing: "Tryk to gange på 3 ved #3",
+     text: h => `<p>#3 kan ikke høre til par 1 (par 1 er fuldt), og den kan heller ikke høre til par 2. Så er der kun ${h.cp(2)} tilbage!</p>`},
+    {doing: "Tryk to gange på 2 ved #1",
+     text: h => `<p>Unge <b>#1</b> ${h.icoU(0)} er en <b>trekant</b> ${h.gt(2, 2)}, så den skal have ét ${h.al(2, 1)} fra hver forælder.</p><p>Moren til ${h.cp(2)} ${h.icoP(4)} er en <b>firkant</b> ${h.gt(2, 0)}: hun har intet ${h.al(2, 1)}. Og par 1 er fuldt… så #1 må høre til ${h.cp(1)}.</p>`},
+    {text: h => `<p>Der er to unger tilbage: <b>#4</b> og <b>#6</b>. Den ene hører til par 2, og den anden til par 3. Ud fra udseendet kunne de begge passe…</p><p>…medmindre vi finder ud af mere om faren til ${h.cp(2)}.</p>`},
     {text: h => `<p>Faren til ${h.cp(2)} har et <b>?</b>: han er skjult, så du kan ikke se, hvordan han ser ud. Det er det, sporene er til.</p>`},
     {doing: "Tryk på ordet “homozygot”",
      text: h => `<p>Her er sporet om ham. Tryk på et ord med et lille <span class="iDot">i</span>, så får du det forklaret.</p>`},
-    {doing: "Tryk to gange på B ved #4",
-     text: h => `<p>C's far er altså ${h.gt(1, 0)}: han kan kun give ${h.al(1, 0)} videre.</p><p>Unge <b>#4</b> ${h.icoU(3)} har <b>antenner</b> ${h.gt(1, 2)} og skal have ét ${h.al(1, 1)} fra hver forælder. Faren til ${h.cp(2)} har intet ${h.al(1, 1)} at give, så #4 hører til ${h.cp(1)}!</p>`},
-    {doing: "Tryk to gange på C ved #6",
+    {doing: "Tryk to gange på 2 ved #4",
+     text: h => `<p>Par 3's far er altså ${h.gt(1, 0)}: han kan kun give ${h.al(1, 0)} videre.</p><p>Unge <b>#4</b> ${h.icoU(3)} har <b>antenner</b> ${h.gt(1, 2)} og skal have ét ${h.al(1, 1)} fra hver forælder. Faren til ${h.cp(2)} har intet ${h.al(1, 1)} at give, så #4 hører til ${h.cp(1)}!</p>`},
+    {doing: "Tryk to gange på 3 ved #6",
      text: h => `<p>Og den sidste, <b>#6</b>, skal hjem til ${h.cp(2)}.</p>`},
     {doing: "Tryk på sporet",
      text: h => `<p>Du har brugt sporet, så tryk på det for at strege det ud. Når der er mange spor, hjælper det dig med at holde styr på dem.</p>`},
